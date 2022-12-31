@@ -138,6 +138,17 @@ class Post<T> {
   }
 }
 
+Post getPostPlaceholder() {
+// Creates Placeholder Post for shimmer efffect
+  return Post(
+    source: null,
+    postedAt: DateTime(2000),
+    author: const User(
+        id: "", source: null, username: "", displayName: null, host: ""),
+    id: "",
+  );
+}
+
 enum PostFlag {
   repeatable,
   replyable,

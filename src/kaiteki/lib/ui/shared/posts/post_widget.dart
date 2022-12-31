@@ -28,6 +28,7 @@ import 'package:kaiteki/ui/shortcuts/activators.dart';
 import 'package:kaiteki/ui/shortcuts/intents.dart';
 import 'package:kaiteki/utils/extensions.dart';
 import 'package:kaiteki_material/kaiteki_material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 const kPostPadding = EdgeInsets.symmetric(vertical: 4.0);
@@ -40,6 +41,7 @@ class PostWidget extends ConsumerStatefulWidget {
   final bool hideReplyee;
   final bool hideAvatar;
   final bool expand;
+  final bool isLoading;
 
   /// onTap callback for content text
   final VoidCallback? onTap;
@@ -54,6 +56,7 @@ class PostWidget extends ConsumerStatefulWidget {
     this.hideAvatar = false,
     this.expand = false,
     this.onTap,
+    this.isLoading = false,
   });
 
   @override
@@ -172,7 +175,7 @@ class _PostWidgetState extends ConsumerState<PostWidget> {
     ];
 
     final theme = Theme.of(context).ktkPostTheme!;
-    return FocusableActionDetector(
+    Widget child = FocusableActionDetector(
       shortcuts: const {
         reply: ReplyIntent(),
         repeat: RepeatIntent(),
@@ -215,6 +218,14 @@ class _PostWidgetState extends ConsumerState<PostWidget> {
         ),
       ),
     );
+
+    return widget.isLoading
+        ? Shimmer.fromColors(
+            baseColor: Theme.of(context).highlightColor,
+            highlightColor: Theme.of(context).disabledColor,
+            child: child,
+          )
+        : child;
   }
 
   List<PopupMenuEntry> _buildActions(BuildContext context) {

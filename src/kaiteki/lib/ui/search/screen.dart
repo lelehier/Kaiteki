@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kaiteki/di.dart';
 import 'package:kaiteki/fediverse/interfaces/search_support.dart';
+import 'package:kaiteki/fediverse/model/post/post.dart';
 import 'package:kaiteki/ui/shared/error_landing_widget.dart';
 import 'package:kaiteki/ui/shared/icon_landing_widget.dart';
 import 'package:kaiteki/ui/shared/posts/post_widget.dart';
@@ -71,7 +72,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(
+                        child: PostWidget(
+                      getPostPlaceholder(),
+                      isLoading: true,
+                    ));
                   }
 
                   if (snapshot.connectionState == ConnectionState.none) {
